@@ -1,0 +1,28 @@
+environments:
+  test:
+    source: # 源文件(可以有多个)
+      - pattern: "dist/**/*" # 匹配 dist 目录下的所有文件
+        strip: "dist" # 去掉 dist 前缀
+      - pattern:
+          glob: "**/*.html" # 匹配所有 html 文件
+          options:
+            dot: true # 匹配 . 开头的文件
+        strip: "dist" #去掉 dist 前缀
+    dist:
+      type: "@s3"
+      dsn: "s3://AeLAO1SGp8yyTks5NqE4:1LXQVYk8PCwjgoHNPvznTpG9zZEvzt9aceKBrB6i@10.69.64.54:19000/super-cp/test/?use-path-style=true&protocol=http"ß
+    rules:
+      - pattern: "*.html" # 匹配所有 html 文件
+        headers:
+          "Cache-Control": "public, max-age=60" # 设置缓存控制，60 秒后过期
+          "Content-Disposition": "inline" # 设置 Content-Disposition 为 inline
+        auto-mime-type: true # 自动根据文件名设置 Content-Type
+      - pattern: "*.js" # 匹配所有 js 文件
+        exclude: true # 排除所有 js 文件
+        auto-mime-type: true # 自动根据文件名设置 Content-Type
+      - pattern: "**/*.css" # 匹配所有 css 文件
+        auto-mime-type: true # 自动根据文件名设置 Content-Type
+      - pattern: "**/*.png" # 匹配所有 png 文件
+        headers:
+          "Content-Disposition": "inline" # 设置 Content-Disposition 为 inline
+        auto-mime-type: true # 自动根据文件名设置 Content-Type
