@@ -6,19 +6,24 @@ import (
 	"path/filepath"
 
 	"git.sxxfuture.net/taojiayi/super-cp/config"
-	"github.com/bmatcuk/doublestar/v4"
+	"git.sxxfuture.net/taojiayi/super-cp/utils/myglob"
 )
 
-// 列出 source 文件列表
-func MatchSourceFiles(pattern interface{}) ([]string, error) {
+/*
+根据 options 规则，列出文件列表
+*/
+func MatchFiles(pattern interface{}) ([]string, error) {
 	var matches []string
 	var err error
 
 	switch p := pattern.(type) {
-	case string: // 普通模式（不会走这里了，因为 unmarshal 的时候已经处理了）
-		matches, err = doublestar.Glob(os.DirFS("."), p)
-	case config.SourcePattern: // glob 模式
-		matches, err = doublestar.Glob(os.DirFS("."), p.Glob)
+	case config.SourcePattern:
+		dotOption := p.Options["dot"]
+		noCaseOption := p.Options["no-case"]
+		matches, err = myglob.Match(os.DirFS("."), p.Glob, myglob.Options{
+			Dot:    dotOption,
+			NoCase: noCaseOption,
+		})
 	default:
 		return nil, fmt.Errorf("unsupported pattern type: %T", pattern)
 	}
@@ -37,21 +42,13 @@ func MatchSourceFiles(pattern interface{}) ([]string, error) {
 	return files, nil
 }
 
+/*
+根据 rule 规则，判断某个路径是否匹配
+*/
 func MatchRuleFiles(pattern interface{}, targetPath string) bool {
 	switch p := pattern.(type) {
-	case string: // 普通模式（不会走这里了，因为 unmarshal 的时候已经处理了）
-		matched, err := doublestar.PathMatch(p, targetPath)
-		if err != nil {
-			fmt.Printf("解析规则模式 %s 失败: %v\n", p, err)
-			return false
-		}
-		return matched
-	case config.RulePattern: // glob 模式
-		matched, err := doublestar.PathMatch(p.Glob, targetPath)
-		if err != nil {
-			fmt.Printf("解析规则模式 %s 失败: %v\n", p.Glob, err)
-			return false
-		}
+	case config.RulePattern:
+		matched := myglob.MatchPath(targetPath, p.Glob)
 		return matched
 	}
 

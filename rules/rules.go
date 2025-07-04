@@ -32,10 +32,13 @@ func ProcessRule(rules []config.Rule, spFiles []core.SPFile) ([]core.SPFile, err
 			}
 
 			matched = true
+
+			// rule.Headers 设置规则头
 			for k, v := range rule.Headers {
 				metadata[k] = v
 			}
 
+			// rules.AutoMimeType 自动根据文件名设置 Content-Type
 			if rule.AutoMimeType {
 				ext := filepath.Ext(file.RemotePath)
 				if ct := mime.TypeByExtension(ext); ct != "" {

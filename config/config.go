@@ -21,8 +21,8 @@ type Source struct {
 }
 
 type SourcePattern struct {
-	Glob    string         `yaml:"glob"`    // 路径，例如 "**/*.html"，"**/*.js"
-	Options map[string]any `yaml:"options"` // 例如 dot: true，noext: true 等
+	Glob    string          `yaml:"glob"`    // 路径，例如 "**/*.html"，"**/*.js"
+	Options map[string]bool `yaml:"options"` // 例如 dot: true，noext: true 等
 }
 
 // Dist 定义目标存储
@@ -42,8 +42,8 @@ type Rule struct {
 }
 
 type RulePattern struct {
-	Glob    string         `yaml:"glob"`    // 路径，例如 "**/*.html"，"**/*.js"
-	Options map[string]any `yaml:"options"` // 例如 dot: true，noext: true 等
+	Glob    string          `yaml:"glob"`    // 路径，例如 "**/*.html"，"**/*.js"
+	Options map[string]bool `yaml:"options"` // 例如 dot: true，noext: true 等
 }
 
 func LoadConfig(path string) (Config, error) {

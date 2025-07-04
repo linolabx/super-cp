@@ -17,10 +17,10 @@ func Scan(env config.Deployment) ([]core.SPFile, error) {
 	files := make([]core.SPFile, 0)
 	// 多个源，合并
 	for _, src := range env.Source {
-		// 使用 doublestar 匹配文件, 返回文件列表
-		sourceFiles, err := utils.MatchSourceFiles(src.Pattern)
+		// 使用 myglob 匹配文件, 返回文件列表
+		sourceFiles, err := utils.MatchFiles(src.Pattern)
 		if err != nil {
-			fmt.Printf("match source pattern %s failed: %v\n", src.Pattern, err)
+			fmt.Printf("match source pattern %s failed: %v\n", src.Pattern.Glob, err)
 			continue
 		}
 

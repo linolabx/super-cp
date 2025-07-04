@@ -10,7 +10,7 @@ environments:
         strip: "dist" #去掉 dist 前缀
     dist:
       type: "@s3"
-      dsn: "s3://AeLAO1SGp8yyTks5NqE4:1LXQVYk8PCwjgoHNPvznTpG9zZEvzt9aceKBrB6i@10.69.64.54:19000/super-cp/test/?use-path-style=true&protocol=http"ß
+      dsn: "s3://AeLAO1SGp8yyTks5NqE4:1LXQVYk8PCwjgoHNPvznTpG9zZEvzt9aceKBrB6i@10.69.64.54:19000/super-cp/test/?use-path-style=true&protocol=http"
     rules:
       - pattern: "*.html" # 匹配所有 html 文件
         headers:
