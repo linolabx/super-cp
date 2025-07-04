@@ -9,7 +9,6 @@ import (
 	"git.sxxfuture.net/taojiayi/super-cp/core"
 	"git.sxxfuture.net/taojiayi/super-cp/rules"
 	"git.sxxfuture.net/taojiayi/super-cp/source"
-	"git.sxxfuture.net/taojiayi/super-cp/utils"
 
 	_ "git.sxxfuture.net/taojiayi/super-cp/targets/s3"
 )
@@ -34,7 +33,7 @@ func main() {
 	}
 
 	// 3. 初始化 S3 客户端
-	if err := core.Targets["@s3"].Init(utils.ReplaceEnvVars(env.Dist.DSN)); err != nil {
+	if err := core.Targets["@s3"].Init(env.Dist.DSN); err != nil {
 		fmt.Printf("init s3 client failed: %v\n", err)
 		os.Exit(1)
 	}
