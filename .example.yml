@@ -45,3 +45,9 @@ jobs:
         index: 2
         headers:
           "Cache-Control": "no-cache"
+      # 排除 dataset 目录下的所有文件
+      - pattern: "dataset/**/*"
+        exclude: true
+      # 保留 dataset 目录下的 public- 开头的 json 文件
+      - pattern: "dataset/**/public-*.json"
+        exclude: false

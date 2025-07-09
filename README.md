@@ -60,9 +60,19 @@ dist:
 对待发布文件应用规则，参考 `.example.yml` 中的示例。
 
 ```yaml
-- pattern: "{icons/**,favicon.ico}"
-  headers:
-    "Cache-Control": "public, max-age=300"
+rules:
+    # glob 匹配
+  - pattern: "{icons/**,favicon.ico}"
+    
+    # 添加 header
+    headers:
+      "Cache-Control": "public, max-age=300"
+
+    # 标记文件为排除
+    exclude: true
+
+    # 设置上传顺序，默认是 0，先小后大
+    index: 1
 ```
 
 ## Development
