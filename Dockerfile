@@ -13,4 +13,6 @@ FROM buildpack-deps:bookworm-curl
 
 COPY --from=builder /build/super-cp /usr/local/bin/super-cp
 
+COPY --from=httpd /usr/local/apache2/conf/mime.types /etc/apache2/mime.types
+
 ENTRYPOINT ["/usr/local/bin/super-cp"]
