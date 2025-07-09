@@ -1,28 +1,47 @@
-environments:
-  test:
-    source: # 源文件(可以有多个)
-      - pattern: "dist/**/*" # 匹配 dist 目录下的所有文件
-        strip: "dist" # 去掉 dist 前缀
-      - pattern:
-          glob: "**/*.html" # 匹配所有 html 文件
-          options:
-            dot: true # 匹配 . 开头的文件
-        strip: "dist" #去掉 dist 前缀
-    dist:
-      type: "@s3"
-      dsn: "s3://AeLAO1SGp8yyTks5NqE4:1LXQVYk8PCwjgoHNPvznTpG9zZEvzt9aceKBrB6i@10.69.64.54:19000/super-cp/test/?use-path-style=true&protocol=http"
+jobs:
+  default:
+    source:
+      pattern: "dist/**" # 匹配 dist 目录下的所有文件
+      strip: "dist" # 去掉 dist 前缀
+    dist: "$MY_S3_DSN" # 从环境变量中获取目标 DSN
     rules:
-      - pattern: "*.html" # 匹配所有 html 文件
+      # 给图标和 favicon 设置 300 秒缓存
+      - pattern: "{icons/**,favicon.ico}"
         headers:
-          "Cache-Control": "public, max-age=60" # 设置缓存控制，60 秒后过期
-          "Content-Disposition": "inline" # 设置 Content-Disposition 为 inline
-        auto-mime-type: true # 自动根据文件名设置 Content-Type
-      - pattern: "*.js" # 匹配所有 js 文件
-        exclude: true # 排除所有 js 文件
-        auto-mime-type: true # 自动根据文件名设置 Content-Type
-      - pattern: "**/*.css" # 匹配所有 css 文件
-        auto-mime-type: true # 自动根据文件名设置 Content-Type
-      - pattern: "**/*.png" # 匹配所有 png 文件
+          "Cache-Control": "public, max-age=300"
+      # 给哈希命名的文件设置永久缓存
+      - pattern: "assets/**"
         headers:
-          "Content-Disposition": "inline" # 设置 Content-Disposition 为 inline
-        auto-mime-type: true # 自动根据文件名设置 Content-Type
+          "Cache-Control": "public, max-age=31536000, immutable"
+      # 给 index.html 设置 3 秒缓存
+      # 同时设置 index 为 1，使得 index.html 在所有文件之后再上传
+      - pattern: "index.html"
+        index: 1
+        headers:
+          "Cache-Control": "public, max-age=3"
+
+  doc:
+    source:
+      pattern: ".vitepress/dist/**"
+      strip: ".vitepress/dist"
+    dist:
+      type: "s3" # 使用 s3 上传
+      dsn: "s3://path/to/your/bucket/path/" # 目标 DSN
+    rules:
+      # 给所有文件设置 1 秒缓存，防止缓存穿透
+      - pattern: "**/*"
+        headers:
+          "Cache-Control": "@second"
+      # 给哈希命名的文件设置永久缓存
+      # 别名 @forever 在 utils/alias.go 中定义，等效于 public, max-age=31536000, immutable
+      - pattern: "assets/**"
+        headers:
+          "Cache-Control": "@forever"
+      # 给所有 html 文件设置 index 为 1，使 html 文件在其他文件之后上传
+      - pattern: "**/*.html"
+        index: 1
+      # 最后上传 index.html 和 hashmap.json，并取消缓存
+      - pattern: "{index.html,hashmap.json}"
+        index: 2
+        headers:
+          "Cache-Control": "no-cache"
