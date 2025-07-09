@@ -1,4 +1,4 @@
-module git.sxxfuture.net/taojiayi/super-cp
+module github.com/linolabx/super-cp
 
 go 1.24.4
 

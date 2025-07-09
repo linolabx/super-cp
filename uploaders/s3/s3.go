@@ -6,11 +6,11 @@ import (
 	"slices"
 	"sync"
 
-	"git.sxxfuture.net/taojiayi/super-cp/core"
-	"git.sxxfuture.net/taojiayi/super-cp/utils"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/linolabx/lino_s3"
+	"github.com/linolabx/super-cp/core"
+	"github.com/linolabx/super-cp/utils"
 	"github.com/spf13/viper"
 )
 

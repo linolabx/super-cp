@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"git.sxxfuture.net/taojiayi/super-cp/utils"
 	"github.com/gobwas/glob"
+	"github.com/linolabx/super-cp/utils"
 )
 
 type Source struct {

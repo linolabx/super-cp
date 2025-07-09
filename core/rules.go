@@ -3,8 +3,8 @@ package core
 import (
 	"maps"
 
-	"git.sxxfuture.net/taojiayi/super-cp/utils"
 	"github.com/gobwas/glob"
+	"github.com/linolabx/super-cp/utils"
 )
 
 // Rule 定义文件处理规则

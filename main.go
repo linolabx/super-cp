@@ -7,12 +7,12 @@ import (
 	"slices"
 	"strings"
 
-	"git.sxxfuture.net/taojiayi/super-cp/core"
-	"git.sxxfuture.net/taojiayi/super-cp/utils"
+	"github.com/linolabx/super-cp/core"
+	"github.com/linolabx/super-cp/utils"
 
-	_ "git.sxxfuture.net/taojiayi/super-cp/uploaders/s3"
 	"github.com/dustin/go-humanize"
 	"github.com/joho/godotenv"
+	_ "github.com/linolabx/super-cp/uploaders/s3"
 	"github.com/samber/lo"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
